@@ -1,15 +1,12 @@
-I = imread('wheel.jpg');
-I=imresize(I,0.85);
-%E = imresize(CannyFilter('Testbild.jpg'),0.2);
-
-E = edge(rgb2gray(I),'canny');
+I = imread('Testbild.jpg');
+E = imresize(CannyFilter(I),0.4);
 
 % override some default parameters
 params.minMajorAxis = 200;
 params.maxMajorAxis = 500;
 params.numBest = 1;
 
-% note that the edge (or gradient) image is used
+% note that the edge (or gradient) image must be used
 bestFits = ellipseDetection(E, params);
 
 fprintf('Output %d best fits.\n', size(bestFits,1));
