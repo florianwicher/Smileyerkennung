@@ -1,28 +1,35 @@
+function Picture = EyeDetetion(Img)
 
-Img = imread('Smileyexample.jpg');
-figure;imshow(Img);
-Img=imbinarize(Img(:,:,3));
-
-
-glasses = imread('Glasses.png');
-glasses = imbinarize(glasses(:,:,3));
-glassessize = size(glasses);
-glassessize = glassessize(1:2);
-glassessize = glassessize';
-
+Img=imbinarize(Img(:,:,3)); 
 Rmin=20;
 Rmax=50;  
 [centersDark, radiiDark] = imfindcircles(Img, [Rmin Rmax],'ObjectPolarity','dark','sensitivity',0.90);
 
-center = centersDark(1:2,:);
-radii = radiiDark(1:2);
+Glass = imread('Glasses1.jpg');
+Glass = imbinarize(Glass(:,:,3));
 
-centers = sum(center,2)/2;
-centers = centers - glassessize/2;
-centers = round(centers);
+Glass = ~Glass;
 
-Img(1:4, 1:3) = glasses;
+dX = centersDark(1,1) - centersDark(1,2);
+dY = centersDark(2,1) - centersDark(2,2);
+H = sqrt(dX^2+dY^2);
+alpha = asind(dX/H);
+Glass = imrotate(Glass, -alpha,'bilinear','crop'); 
 
-hold on
-viscircles(centersDark, radiiDark,'LineStyle','--');
-hold off
+Glass = ~Glass;
+
+oX = -20;
+oY = 0;
+
+[n,m] = size(Glass);
+
+ for y = 1:m 
+     for x = 1:n    
+         if Glass(x,y) < 1
+             Img(x+oX,y+oY) = 0;
+         end
+     end
+ end
+ 
+ Picture = Img;
+ 
