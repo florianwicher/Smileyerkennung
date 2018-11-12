@@ -16,3 +16,7 @@ image(I);
 
 %ellipse drawing implementation: http://www.mathworks.com/matlabcentral/fileexchange/289 
 ellipse_draw(bestFits(:,3),bestFits(:,4),bestFits(:,5)*pi/180,bestFits(:,1),bestFits(:,2),'r');
+
+I = imread('Smileyexample1.jpg');
+I = EyeDetetion(I);
+image(I);
