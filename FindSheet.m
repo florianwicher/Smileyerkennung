@@ -9,7 +9,7 @@ Image_BW_medfilt=medfilt2(Image_BW);
 
 %Kantenbild aus Cannyfilter erstellen
 pa=CannyFilter(Image_BW_medfilt, Theshold);
-figure,imshow(pa);
+%figure,imshow(pa);
 
 SE=strel('square',3);
 BW=imdilate(pa,SE);
@@ -27,7 +27,7 @@ y=xy(1,2);
 minSize=(x*y)/300;
 
 idx = find(Area >minSize);
-BWa = ismember(labeled,idx); % entfernet die Werte des Areals, welche <=5000 sind
+BWa = ismember(labeled,idx); % entfernet die Werte dessen Flächeninhalt <minSize sind
 figure,imshow(BWa)
 
 s=regionprops(BWa,'BoundingBox');
@@ -42,6 +42,7 @@ objectcoordinates=[boundingbox m];
 %found = b>50;
 %objectcoordinates=a(found,:);
 
+%entfernt Werte dessen Dichte der weißen Pixel kleiner als 0.5 sind
 b=objectcoordinates(:,5);
 a=objectcoordinates;
 found = b>0.5;
