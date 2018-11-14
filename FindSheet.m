@@ -49,11 +49,6 @@ found = b>0.5;
 objectcoordinates=a(found,:);
 
 
-
-
-
-
-
 %[sortedS, sortIndexes] = [measurements.Solidity]
 figure,imshow(bild)
 hold on
