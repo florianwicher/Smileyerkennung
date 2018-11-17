@@ -1,0 +1,14 @@
+I = imread('Testbild.jpg');
+F = FindSheet(I);
+I = imcrop(I, F(3,1:4));
+
+E = CannyFilter(imbinarize(rgb2gray(I)),0.1);
+
+
+fprintf('Output %d best fits.\n', size(bestFits,1));
+
+figure;
+image(I);
+
+%ellipse drawing implementation: http://www.mathworks.com/matlabcentral/fileexchange/289 
+ellipse_draw(bestFits(:,3),bestFits(:,4),bestFits(:,5)*pi/180,bestFits(:,1),bestFits(:,2),'r');
