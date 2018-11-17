@@ -11,18 +11,16 @@ params.numBest = 10;
 % note that the edge (or gradient) image must be used
 
 params.minMajorAxis = 00;
-params.maxMajorAxis = 90;
+params.maxMajorAxis = 160;
 params.rotation = 0;
 params.rotationSpan = 0;
-params.minAspectRatio = 0.4;
-params.randomize = 1;
-params.numBest = 10;
+params.minAspectRatio = 0;
+params.randomize = 100;
+params.numBest = 1;
 params.uniformWeights = true;
 params.smoothStddev = 1;
 
 bestFits = ellipseDetection(E, params);
-
-
 
 fprintf('Output %d best fits.\n', size(bestFits,1));
 
