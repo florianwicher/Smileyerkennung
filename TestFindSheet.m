@@ -1,3 +1,3 @@
-%I = imread('Testbild.jpg');
+I = imread('Testbild.jpg');
 rectangles=FindSheet(I);
 

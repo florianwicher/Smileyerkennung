@@ -11,7 +11,7 @@ Image_BW_medfilt=medfilt2(Image_BW);
 pa=CannyFilter(Image_BW_medfilt, Theshold);
 %figure,imshow(pa);
 
-SE=strel('square',3);
+SE=strel('disk',3);
 BW=imdilate(pa,SE);
 %figure,imshow(BW);
 BWfill=imfill(BW,'holes');
@@ -28,7 +28,7 @@ minSize=(x*y)/300;
 
 idx = find(Area >minSize);
 BWa = ismember(labeled,idx); % entfernet die Werte dessen Flächeninhalt <minSize sind
-figure,imshow(BWa)
+%figure,imshow(BWa)
 
 s=regionprops(BWa,'BoundingBox');
 boundingbox=cat(1,s.BoundingBox);
@@ -50,18 +50,17 @@ objectcoordinates=a(found,:);
 
 
 %[sortedS, sortIndexes] = [measurements.Solidity]
-figure,imshow(bild)
+figure,imshow(pa)
 hold on
 plot(objectcoordinates(:,1),objectcoordinates(:,2),'b*')
 hold off
-%boundingbox
 for i=1:size(objectcoordinates,1)
     rectangle('Position',[objectcoordinates(i,1) objectcoordinates(i,2) objectcoordinates(i,3) objectcoordinates(i,4)],'EdgeColor','r','LineWidth',2);
-    %t=text(objectcoordinates(i,1),objectcoordinates(i,2),num2str(objectcoordinates(i,5)));
+    t=text(objectcoordinates(i,1),objectcoordinates(i,2),num2str(objectcoordinates(i,5)));
     tsize=text(objectcoordinates(i,1),objectcoordinates(i,2),num2str(objectcoordinates(i,3)* objectcoordinates(i,4)));
     tsize.Color='white';
     tsize.FontSize=14;
 end
 
-s=size(BWfill)
+s=size(BWfill);
 findsheet=objectcoordinates;
