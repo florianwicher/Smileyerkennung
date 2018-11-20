@@ -7,3 +7,12 @@ figure;
 image(I);
 
 ellipse_draw(a,b,alpha*pi/180,x0,y0,'r');
+
+
+[T, inverse] = ellipseToCircleT(a,b);
+img = imgTransform(I, T);
+figure;
+imshow(img);
+
+figure;
+imshow(imgTransform(img, inverse));
