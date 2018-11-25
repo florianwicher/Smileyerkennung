@@ -1,112 +1,73 @@
-function Picture = EyeDetection(Img)
-ImgB = Img;
+function Picture = EyeDetection(Img, MitteSmileyX, MitteSmileyY, RadiusSmiley)
+Rmin = RadiusSmiley/10;
+Rmax= RadiusSmiley*2/10;
+%Berechnen der Augengröße
+[centersDark, radii] = imfindcircles(Img,[Rmin Rmax],'ObjectPolarity','dark','sensitivity',0.9);
 
-ImgB=imbinarize(ImgB(:,:,3));
-
-%Mitte des Smileys berechnen / Smiley ausschneiden
-[heightP,lengthP,~] = size(Img);
-heightset = false;
-lengthset = false;
-for height = 1:heightP
-    for length = 1:lengthP
-        if ImgB(height,length)==0 && ~lengthset
-            y1 = height;
-            lengthset = true;
-        end
-    end
-end
-
-for length = 1:lengthP
-    for height = 1:heightP
-        if ImgB(height,length)==0 && ~heightset
-            x2 = length;
-            heightset = true;
-        end
-    end
-end
-
-heightset = false;
-lengthset = false;
-for height = 0:heightP-1
-    for length = 0:lengthP-1
-        if ImgB(heightP-height,lengthP-length)==0 && ~lengthset
-            y3 = heightP-height;
-            lengthset = true;
-        end
-    end
-end
-
-for length = 0:lengthP-1
-    for height = 0:heightP-1
-        if ImgB(heightP-height,lengthP-length)==0 && ~heightset
-            x4 = lengthP-length;
-            heightset = true;
-        end
-    end
-end
-            
-length = x4 - x2;
-height = y3 - y1;
-
-ImgCropped = imcrop(ImgB,[x2 y1 length height]);
-
-
-%Winkel des Smileys erkennen
-heightHalf = round(height/2);
-lengthHalf = round(length/2);
-for Winkel = 0:360
-    ImgTemp = imrotate(~ImgCropped,Winkel,'crop');
-    ImgTemp = ~ImgTemp;
+%TODO Finde die 2 Nähesten Kreise
+[zeilen, ~] = size(centersDark);
+[zeilenBild, spaltenBild,~] = size(Img);
+for x = 1:zeilen
+    deltaX = centersDark(x,1) - MitteSmileyX;
+    deltaY = centersDark(x,2) - MitteSmileyY;
     
-    ImgO = ImgTemp(1:heightHalf,1:length);
-    ImgU = ImgTemp(heightHalf+1:height,1:length);
-    ImgL = ImgTemp(1:height,1:lengthHalf);
-    ImgR = ImgTemp(1:height,lengthHalf+1:length);
-    
-    SumO = sum(ImgO(:)==0);
-    SumU = sum(ImgU(:)==0);
-    SumL = sum(ImgL(:)==0);
-    SumR = sum(ImgR(:)==0);
-    
-    VerhaeltnisH = SumO/SumU;
-    VerhaeltnisS = SumL/SumR;
-    if VerhaeltnisH <= 0.94 && VerhaeltnisS >=0.99 && VerhaeltnisS <= 1.01
-        WinkelP = Winkel;
-        break
-    end
+    centersDark(x,3) = sqrt(deltaX^2 + deltaY^2);
 end
 
-Glass = imread('Glasses.jpg');
-Glass = imcomplement(Glass);
-[~,lengthGlass,~] = size(Glass);
-Glass = imresize(Glass,length/lengthGlass);
-Glass = imcomplement(Glass);
+[~, minZeile] = min(centersDark(:,3));
+Kreis1 = centersDark (minZeile, 1:2);
+centersDark(minZeile,:)=[];
+[~, minZeile] = min(centersDark(:,3));
+Kreis2 = centersDark (minZeile, 1:2);
 
-Img = imcomplement(Img);
-Img = imrotate(Img,WinkelP,'crop');
-Img = imcomplement(Img);
+%TODO Lenge zwischen den Kreisen ausrechnen
+Delta = Kreis1 - Kreis2;
+LengeZwischenAugen = sqrt(Delta(1)^2 + Delta(2)^2);
+    %TODO Brille
+    Brille = imread('Glasses.jpg');
+    Brille = imresize(Brille,LengeZwischenAugen/100);
 
-[heightGlass,lengthGlass,o] = size(Glass);
-oX=x2+round(heightGlass/3);
-oY=y1+round(lengthGlass/14);
+%TODO Winkel der Kreise ausrechnen
+if Kreis1(1) > Kreis2(1)
+    Helper = Kreis1;
+    Kreis1 = Kreis2;
+    Kreis2 = Helper;
+end
 
- for x = 1:heightGlass 
-     for y = 1:lengthGlass  
-         for z = 1:o
-            if Glass(x,y,z) < 200
-                if(x+oX)>0 && (x+oX)<lengthP && (y+oY)>0 && (y+oY)<heightP
-                    Img(x+oX,y+oY,z) = Glass(x,y,z);
+%TODO Mitte der Kreise berechnen
+Mitte = Kreis1 + ((Kreis2 - Kreis1) * 0.5);
+
+if Mitte(2) >= MitteSmileyY
+LengeFuerBerechnung = abs(Kreis1(1) - Kreis2(1));
+else
+LengeFuerBerechnung = Kreis1(1) - Kreis2(1);
+end
+
+Winkel = acosd(LengeFuerBerechnung/LengeZwischenAugen);
+    %TODO Brille nach Winkel rotieren
+    Brille = imcomplement(Brille);
+    Brille = imrotate(Brille,Winkel);
+    Brille = imcomplement(Brille);
+
+%TODO Startpunkt
+[zeilenBrille, spaltenBrille, ~] = size(Brille);
+Mitte(1) = round(Mitte(1) - spaltenBrille/2);
+Mitte(2) = round(Mitte(2) - zeilenBrille/2);
+Mitte = round(Mitte);
+
+%TODO Brille aufsetzen 
+ for x = 1:zeilenBrille 
+     for y = 1:spaltenBrille
+         for z = 1:3
+            if Brille(x,y,z) < 200
+                if(x+Mitte(2))>0 && (x+Mitte(2)) <= spaltenBild && (y+Mitte(1))>0 && (y+Mitte(1))<zeilenBild
+                    Img(x + Mitte(2),y + Mitte(1),z) = Brille(x,y,z);
                 end
             end
          end
      end
  end
- 
-Img = imcomplement(Img);
-Img = imrotate(Img,-WinkelP,'crop');
-Img = imcomplement(Img);
-
-Picture = Img;
+ Picture = Img;
 end
 
  
