@@ -1,2 +1,4 @@
-img2 = EyeDetection(img, 800, 1100, 500);
+image(img);
+img2 = EyeDetection(img, vec(1), vec(2), a);
+
 imshow(img2);

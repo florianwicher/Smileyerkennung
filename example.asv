@@ -12,10 +12,9 @@ ellipse_draw(a,b,alpha*pi/180,x0,y0,'r');
 [T, inverse] = ellipseToCircleT(a,b);
 img = imgTransform(I, T);
 figure;
+imshow(img);
 
 img = imgTransform(img, inverse);
-imshow(img);
-vec = (inverse*[x0;y0;0]);
-img2 = EyeDetection(img, vec(1), vec(2), a);
 
+img2 = EyeDetection(img, T*[x0,0], T*[y0,0], 500);
 imshow(img2);
