@@ -2,8 +2,7 @@ function Picture = EyeDetection(Img, MitteSmileyX, MitteSmileyY, RadiusSmiley)
 Rmin = round(RadiusSmiley/9);
 Rmax= round(RadiusSmiley*2/9);
 %Berechnen der Augengröße
-[centersDark, radii] = imfindcircles(Img,[Rmin Rmax],'ObjectPolarity','dark','sensitivity',0.95);
-
+[centersDark, radii] = imfindcircles(Img,[Rmin Rmax],'ObjectPolarity','dark','sensitivity',0.91);
 %TODO Finde die 2 Nähesten Kreise
 [zeilen, ~] = size(centersDark);
 [zeilenBild, spaltenBild,~] = size(Img);
@@ -37,7 +36,7 @@ end
 %TODO Mitte der Kreise berechnen
 Mitte = Kreis1 + ((Kreis2 - Kreis1) * 0.5);
 
-if Mitte(2) >= MitteSmileyY
+if Mitte(2) < MitteSmileyY
 LengeFuerBerechnung = abs(Kreis1(1) - Kreis2(1));
 else
 LengeFuerBerechnung = Kreis1(1) - Kreis2(1);
