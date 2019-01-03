@@ -7,14 +7,24 @@ figure;
 image(I);
 ellipse_draw(a,b,alpha*pi/180,x0,y0,'r');
 
+% show original image with axes
+% figure('Name','original (axes)');
+% imshow(drawAxes(I, x0, y0, a, b));
 
-[T, inverse] = ellipseToCircleT(a,b);
-img = imgTransform(I, inverse);
-figure;
+% compute T and transform the image
+T = ellipseToCircleT(a,b);
+img_corrected = imgTransform(I, T);
 
+% center
+center = [x0, y0, 0];
+centerNew = center * T;
 
-imshow(img);
-vec = (inverse*[x0;y0;0]);
-img2 = EyeDetection(img, vec(1), vec(2), a);
-img2 = imgTransform(img2, T);
+% show corrected image with axes
+% figure('Name','corrected (axes)');
+% imshow(drawAxes(img_corrected, centerNew(1), centerNew(2), a));
+
+img2 = EyeDetection(img_corrected, centerNew(1), centerNew(2), a);
+
+figure();
+img2 = imgTransform(img_corrected, inv(T));
 imshow(img2);
