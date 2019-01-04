@@ -21,28 +21,37 @@ arah = arah*180/pi;
 pan=size(A,1);
 leb=size(A,2);
 %Adjustment for negative directions, making all directions positive
-for i=1:pan
-    for j=1:leb
-        if (arah(i,j)<0) 
-            arah(i,j)=360+arah(i,j);
-        end;
-    end;
-end;
+% for i=1:pan
+%     for j=1:leb
+%         if (arah(i,j)<0) 
+%             arah(i,j)=360+arah(i,j);
+%         end;
+%     end;
+% end;
+
+arah(arah < 0) = arah(arah < 0) + 360;
+
 arah2=zeros(pan, leb);
 %Adjusting directions to nearest 0, 45, 90, or 135 degree
-for i = 1  : pan
-    for j = 1 : leb
-        if ((arah(i, j) >= 0 ) && (arah(i, j) < 22.5) || (arah(i, j) >= 157.5) && (arah(i, j) < 202.5) || (arah(i, j) >= 337.5) && (arah(i, j) <= 360))
-            arah2(i, j) = 0;
-        elseif ((arah(i, j) >= 22.5) && (arah(i, j) < 67.5) || (arah(i, j) >= 202.5) && (arah(i, j) < 247.5))
-            arah2(i, j) = 45;
-        elseif ((arah(i, j) >= 67.5 && arah(i, j) < 112.5) || (arah(i, j) >= 247.5 && arah(i, j) < 292.5))
-            arah2(i, j) = 90;
-        elseif ((arah(i, j) >= 112.5 && arah(i, j) < 157.5) || (arah(i, j) >= 292.5 && arah(i, j) < 337.5))
-            arah2(i, j) = 135;
-        end;
-    end;
-end;
+% for i = 1  : pan
+%     for j = 1 : leb
+%         if ((arah(i, j) >= 0 ) && (arah(i, j) < 22.5) || (arah(i, j) >= 157.5) && (arah(i, j) < 202.5) || (arah(i, j) >= 337.5) && (arah(i, j) <= 360))
+%             arah2(i, j) = 0;
+%         elseif ((arah(i, j) >= 22.5) && (arah(i, j) < 67.5) || (arah(i, j) >= 202.5) && (arah(i, j) < 247.5))
+%             arah2(i, j) = 45;
+%         elseif ((arah(i, j) >= 67.5 && arah(i, j) < 112.5) || (arah(i, j) >= 247.5 && arah(i, j) < 292.5))
+%             arah2(i, j) = 90;
+%         elseif ((arah(i, j) >= 112.5 && arah(i, j) < 157.5) || (arah(i, j) >= 292.5 && arah(i, j) < 337.5))
+%             arah2(i, j) = 135;
+%         end;
+%     end;
+% end;
+arah2 = arah;
+arah2((arah >= 0     & arah < 22.5)  | (arah >= 157.5 & arah < 202.5) | (arah >= 337.5 & arah <=360)) = 0;
+arah2((arah >= 22.5  & arah < 67.5)  | (arah >= 202.5 & arah < 247.5)) = 45;
+arah2((arah >= 67.5  & arah < 112.5) | (arah >= 247.5 & arah < 292.5)) = 90;
+arah2((arah >= 112.5 & arah < 157.5) | (arah >= 292.5 & arah < 337.5)) = 135;
+
 figure, imagesc(arah2); colorbar;
 %Calculate magnitude
 magnitude = (Filtered_X.^2) + (Filtered_Y.^2);
@@ -62,6 +71,7 @@ for i=2:pan-1
         end;
     end;
 end;
+
 BW = BW.*magnitude2;
 figure, imshow(BW);
 %Hysteresis Thresholding
