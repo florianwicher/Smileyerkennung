@@ -1,3 +1,4 @@
+close all
 I = imread('Datensatz/IMG_20181117_155202.jpg');
 imshow(CannyFilter(imbinarize(rgb2gray(I)),0.1));
 
@@ -23,8 +24,10 @@ centerNew = center * T;
 % figure('Name','corrected (axes)');
 % imshow(drawAxes(img_corrected, centerNew(1), centerNew(2), a));
 
-img2 = EyeDetection(img_corrected, centerNew(1), centerNew(2), a);
+img2 = FloodFill(img_corrected, round(centerNew(1)), round(centerNew(2)), 0.7);
+
+img2 = EyeDetection(img2, centerNew(1), centerNew(2), a);
 
 figure();
-img2 = imgTransform(img_corrected, inv(T));
+img2 = imgTransform(img2, inv(T));
 imshow(img2);
