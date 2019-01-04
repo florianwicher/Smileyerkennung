@@ -8,7 +8,7 @@ T_High = 0.175;
 B = [2, 4, 5, 4, 2; 4, 9, 12, 9, 4;5, 12, 15, 12, 5;4, 9, 12, 9, 4;2, 4, 5, 4, 2 ];
 B = 1/159.* B;
 %Convolution of image by Gaussian Coefficient
-A=conv2(img, B, 'same');
+A=conv2(double(img), B, 'same');
 %Filter for horizontal and vertical direction
 KGx = [-1, 0, 1; -2, 0, 2; -1, 0, 1];
 KGy = [1, 2, 1; 0, 0, 0; -1, -2, -1];

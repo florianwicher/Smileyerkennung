@@ -1,5 +1,5 @@
 close all
-I = imread('Datensatz/IMG_20181117_155202.jpg');
+I = imread('Datensatz/IMG_20181231_152220.jpg');
 imshow(CannyFilter(imbinarize(rgb2gray(I)),0.1));
 
 [x0,y0,a,b,alpha] = FindBestEllipse(I);
