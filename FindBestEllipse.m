@@ -1,9 +1,7 @@
 function [xCenter,yCenter,a,b,alpha] = FindBestEllipse(image)
 
 F = FindSheet(image);
-    
     results = zeros(0,6);
-    
     
 for i = 1:size(F,1)
     
@@ -15,26 +13,20 @@ for i = 1:size(F,1)
     kantenbild = CannyFilter(binaryImage,0.2);
     if sum(kantenbild(:)) < 10000000
 
-    [Y,X]=find(kantenbild);
-    Y = single(Y); %single precision
-    X = single(X);
-    N = length(Y);
+    [Y,X]=find(kantenbild);  %list all points in binary image that are 1
     
     hypotenuseSquared = (X-X').^2 + (Y-Y').^2;
-    [P,Q] = find(hypotenuseSquared); %list all points in binary image that are 1
-    index = P<Q;
-        
-    perm = randperm(length(P));
-    pairSubset = perm(1:min(length(P),10*N));
-    clear perm;
-
+    [P,Q] = find(hypotenuseSquared);
     highestScoringEllipse = zeros(1,6);
     highscore = 0;
     
-    for pair = pairSubset
+               perm = randperm(length(P));
+    for pair = perm(1:min(length(P),10*length(Y)))
         
-        x1=X(P(pair)); y1=Y(P(pair));
-        x2=X(Q(pair)); y2=Y(Q(pair));
+        x1=X(P(pair));
+        x2=X(Q(pair));
+        y1=Y(P(pair));
+        y2=Y(Q(pair));
         
         xCenter=0.5*x1 + 0.5*x2; yCenter=0.5*y1 + 0.5*y2;
         aSq = hypotenuseSquared(P(pair),Q(pair))/4;
@@ -62,13 +54,9 @@ for i = 1:size(F,1)
             highscore = score;
         end
     end
-   
     results = cat(1, results, highestScoringEllipse);
-    
     end
 end
-
-
 
 [~, index] = max(results(:,6));
 
