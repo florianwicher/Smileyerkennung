@@ -17,11 +17,14 @@ for i = 1:size(F,1)
     
     hypotenuseSquared = (X-X').^2 + (Y-Y').^2;
     [P,Q] = find(hypotenuseSquared);
+    index = P<Q;
+    P = uint32(P(index));
+    Q = uint32(Q(index));
     highestScoringEllipse = zeros(1,6);
     highscore = 0;
     
-               perm = randperm(length(P));
-    for pair = perm(1:min(length(P),10*length(Y)))
+    pairSubset = (randsample(length(P),min(length(P),10*length(Y))))';
+    for pair = pairSubset
         
         x1=X(P(pair));
         x2=X(Q(pair));
