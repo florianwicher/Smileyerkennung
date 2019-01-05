@@ -1,15 +1,24 @@
 function [x0,y0,a,b,alpha] = FindBestEllipse(image)
 
 F = FindSheet(image);
-
-    params.minAspectRatio = 0.2;
     
     results = zeros(0,6);
+    
+    
+    
     
 for i = 1:size(F,1)
     
     croppedImage = imcrop(image, F(i,1:4));
-    kantenbild = CannyFilter(imbinarize(rgb2gray(croppedImage)),0.2);
+    
+        binaryImage = imbinarize(rgb2gray(croppedImage));
+    binaryImage = MedianFilter(binaryImage);
+    binaryImage = OpenImage(binaryImage,5);
+    kantenbild = CannyFilter(binaryImage,0.2);
+    if sum(kantenbild(:)) < 10000000
+
+
+
     
 
     H = fspecial('gaussian', [6 1], 1);
@@ -58,7 +67,7 @@ for i = 1:size(F,1)
         accumulator = accumarray(idxs, 1);
 
         accumulator = conv(accumulator,H,'same');
-        accumulator(1:ceil(sqrt(aSq)*params.minAspectRatio)) = 0;
+        accumulator(1:ceil(sqrt(aSq)*0.4)) = 0;
         [score, idx] = max(accumulator);
 
         if (highscore < score)
@@ -69,6 +78,7 @@ for i = 1:size(F,1)
    
     results = cat(1, results, highestScoringEllipse);
     
+    end
 end
 
 

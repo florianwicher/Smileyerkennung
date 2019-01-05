@@ -1,5 +1,5 @@
-close all
-I = imread('Datensatz/IMG_4069.jpg');
+I = imread('Datensatz/IMG_20181231_145903.jpg');
+
 imshow(CannyFilter(imbinarize(rgb2gray(I)),0.1));
 
 [x0,y0,a,b,alpha] = FindBestEllipse(I);
@@ -26,7 +26,7 @@ centerNew = center * T;
 
 img2 = FloodFill(img_corrected, round(centerNew(1)), round(centerNew(2)), 0.7);
 
-img2 = EyeDetection(img2, centerNew(1), centerNew(2), a);
+[img2,worked] = EyeDetection(img2, centerNew(1), centerNew(2), a);
 
 figure();
 img2 = imgTransform(img2, inv(T));

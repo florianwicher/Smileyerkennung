@@ -1,12 +1,16 @@
 function [x0,y0,a,b,alpha] = FindBestEllipse(image)
 
 F = FindSheet(image);
-results = zeros(0,6);
+    
+    results = zeros(0,6);
     
 for i = 1:size(F,1)
     
     croppedImage = imcrop(image, F(i,1:4));
     kantenbild = CannyFilter(imbinarize(rgb2gray(croppedImage)),0.2);
+    
+
+    H = fspecial('gaussian', [6 1], 1);
 
     [Y,X]=find(kantenbild);
     Y = single(Y); X = single(X);
@@ -29,17 +33,16 @@ for i = 1:size(F,1)
     highestScoringEllipse = zeros(1,6);
     highscore = 0;
     
-    for j = 1:size(pairSubset)
+    for p= pairSubset
         
-        x1=X(I(j)); y1=Y(I(j));
-        x2=X(J(j)); y2=Y(J(j));
+        x1=X(I(p)); y1=Y(I(p));
+        x2=X(J(p)); y2=Y(J(p));
         
         x0=(x1+x2)/2; y0=(y1+y2)/2;
-        aSq = distsSq(I(j),J(j))/4;
+        aSq = distsSq(I(p),J(p))/4;
         thirdPtDistsSq = (X-x0).^2 + (Y-y0).^2;
         K = thirdPtDistsSq <= aSq;
 
-        
         fSq = (X(K)-x2).^2 + (Y(K)-y2).^2;
         cosTau = (aSq + thirdPtDistsSq(K) - fSq) ./ (2*sqrt(aSq*thirdPtDistsSq(K)));
         cosTau = min(1,max(-1,cosTau));
@@ -52,8 +55,8 @@ for i = 1:size(F,1)
         
         accumulator = accumarray(idxs, 1);
 
-        accumulator = conv(accumulator,fspecial('gaussian', [6 1], 1),'same');
-        accumulator(1:ceil(sqrt(aSq)*0.2)) = 0;
+        accumulator = conv(accumulator,H,'same');
+        accumulator(1:ceil(sqrt(aSq)*params.minAspectRatio)) = 0;
         [score, idx] = max(accumulator);
 
         if (highscore < score)
@@ -63,6 +66,18 @@ for i = 1:size(F,1)
     end
    
     results = cat(1, results, highestScoringEllipse);
+=======
+    binaryImage = imbinarize(rgb2gray(croppedImage));
+    binaryImage = MedianFilter(binaryImage);
+    binaryImage = OpenImage(binaryImage,5);
+    kantenbild = CannyFilter(binaryImage,0.2);
+    if sum(kantenbild(:)) < 10000000
+        values = ellipseDetection(kantenbild, params);
+        values(:,1)= values(:,1)+F(i,1);
+        values(:,2)= values(:,2)+F(i,2);
+        bestFits = cat(1, bestFits, values);
+    end
+>>>>>>> ae09495e99a7034613ac6001eb9b956554ba250a
     
 end
 
