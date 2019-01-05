@@ -1,0 +1,4 @@
+I = imread('Testbild.jpg');
+Theshold=graythresh(I);
+Image_BW=im2bw(I,Theshold);
+l=dete
