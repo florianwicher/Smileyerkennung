@@ -1,5 +1,7 @@
 function [Picture,worked] = EyeDetection(Img, MitteSmileyX, MitteSmileyY, RadiusSmiley)
+
 Im = ImgBinaer(Img,0.3);
+
 [zeilenBild, spaltenBild,~] = size(Img);    
 %Augen berechnen 
 xHelper = 0;

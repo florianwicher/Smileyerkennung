@@ -8,6 +8,12 @@ invT = inv(T);
 Y = round( [1:size(B,1)] .* invT(2,1) + [1:size(B,1)] .* invT(2,2) + [1:size(B,1)] .* invT(2,3) ); 
 X = round( [1:size(B,2)] .* invT(1,1) + [1:size(B,2)] .* invT(1,2) + [1:size(B,2)] .* invT(1,3) ); 
        
+Y(Y < 1) = 1;
+Y(Y > s(2)) = s(2);
+
+X(X < 1) = 1;
+X(X > s(1)) = s(1);
+
 y = 1:size(B,1);
 x = 1:size(B,2);
 

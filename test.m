@@ -1,4 +1,8 @@
-image(img);
-img2 = EyeDetection(img, vec(1), vec(2), a);
+I = imread('Smileyexample.jpg');
+Im = ImgBinaer(I,0.3);
 
-imshow(img2);
+
+s = size(I);
+I = EyeDetection(I,s(1)/2,s(1)/2,(s(1)-5)/2);
+
+imshow(I)
