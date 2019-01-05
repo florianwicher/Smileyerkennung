@@ -8,7 +8,7 @@ function h=ellipse(ra,rb,ang,x0,y0,C,Nb)
 % The length of ra, rb, and ang should be the same. 
 % If ra is a vector of length L and x0,y0 scalars, L ellipses
 % are added at point x0,y0.
-% If ra is a scalar and x0,y0 vectors of length M, M ellipse are with the same 
+% If ra is a scalar and x0,y0 vectors of lengtgith M, M ellipse are with the same 
 % radii are added at the points x0,y0.
 % If ra, x0, y0 are vectors of the same length L=M, M ellipses are added.
 % If ra is a vector of length L and x0, y0 are  vectors of length
