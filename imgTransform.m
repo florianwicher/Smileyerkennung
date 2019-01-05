@@ -2,17 +2,19 @@ function B=imgTransform(A, T)
 
 s = [size(A,2), size(A,1), 1] * T;
 
-B = zeros(round(s(2)), round(s(1)), 3,'uint8');
+s = round(s);
+
+B = zeros(s(2), s(1), 3,'uint8');
 
 invT = inv(T);
 Y = round( [1:size(B,1)] .* invT(2,1) + [1:size(B,1)] .* invT(2,2) + [1:size(B,1)] .* invT(2,3) ); 
 X = round( [1:size(B,2)] .* invT(1,1) + [1:size(B,2)] .* invT(1,2) + [1:size(B,2)] .* invT(1,3) ); 
        
 Y(Y < 1) = 1;
-Y(Y > s(2)) = s(2);
+Y(Y > size(A,1)) = size(A,1);
 
 X(X < 1) = 1;
-X(X > s(1)) = s(1);
+X(X > size(A,2)) = size(A,2);
 
 y = 1:size(B,1);
 x = 1:size(B,2);
