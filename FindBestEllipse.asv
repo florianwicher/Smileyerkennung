@@ -21,8 +21,9 @@ for i = 1:size(F,1)
     N = length(Y);
     
     hypotenuseSquared = (X-X').^2 + (Y-Y').^2;
-    [P,Q] = find(hypotenuseSquared); %list all points in binary image that are 1
+    [P,Q] = find(hypotenuseSquared);
     index = P<Q;
+    P = uint32(P(index)); Q = uint32(Q(index));
         
     perm = randperm(length(P));
     pairSubset = perm(1:min(length(P),10*N));
@@ -31,22 +32,21 @@ for i = 1:size(F,1)
     highestScoringEllipse = zeros(1,6);
     highscore = 0;
     
-    for pair = pairSubset
+    for p= pairSubset
         
-        x1=X(P(pair)); y1=Y(P(pair));
-        x2=X(Q(pair)); y2=Y(Q(pair));
+        x1=X(P(p)); y1=Y(P(p));
+        x2=X(Q(p)); y2=Y(Q(p));
         
         xCenter=0.5*x1 + 0.5*x2; yCenter=0.5*y1 + 0.5*y2;
-        aSq = hypotenuseSquared(P(pair),Q(pair))/4;
-        thirdPtDistsSq = (X-xCenter).^2 + (Y-yCenter).^2;
-        K = thirdPtDistsSq <= aSq;
+        aSq = hypotenuseSquared(P(p),Q(p))/4;
+        thirdPtDistance = sqrt((X-xCenter).^2 + (Y-yCenter).^2);
+        K = thirdPtDistance.^2 <= aSq;
 
         fSq = (X(K)-x2).^2 + (Y(K)-y2).^2;
-        cosineTau = (aSq + thirdPtDistsSq(K) - fSq) ./ (2*sqrt(aSq*thirdPtDistsSq(K)));
-        cosineTau = max(-1,cosineTau);
-        cosineTau = min(1,cosineTau);
-        sineTauSq = 1 - cosineTau.^2; %weil sin(x)^2+cos(x)^2=1
-        b = sqrt( (aSq * thirdPtDistsSq(K) .* sineTauSq) ./ (aSq - thirdPtDistsSq(K) .* cosineTau.^2) );
+        cosTau = (aSq + (thirdPtDistance(K).*) - fSq) ./ (2*sqrt(aSq*thirdPtDistance(K)));
+        cosTau = min(1,max(-1,cosTau));
+        sinTauSq = 1 - cosTau.^2; %weil sin(x)^2+cos(x)^2=1
+        b = sqrt( (aSq * thirdPtDistance(K) .* sinTauSq) ./ (aSq - thirdPtDistance(K) .* cosTau.^2) );
 
         indices = round(b);
         indices = indices(indices>0);
