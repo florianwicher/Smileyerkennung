@@ -33,7 +33,6 @@ for y = 0:0.1:1.5
                     checker = 0;
                 end
             end
-            Img(round(xPoint),round(yPoint),:) = 150;
         end
     end
 end
@@ -41,13 +40,22 @@ imshow(Img)
 if circles(1,1)~=0 && circles(2,1)~=0
     Kreis1 = circles(1,1:2);
     Kreis2 = circles(2,1:2);
-
     %TODO Lenge zwischen den Kreisen ausrechnen
     Delta = Kreis1 - Kreis2;
     LengeZwischenAugen = sqrt(Delta(1)^2 + Delta(2)^2);
+    if(LengeZwischenAugen < RadiusSmiley/8 && length(circles(:,1))>=3)
+        for cir = 3:length(circles(:,1))
+            if(LengeZwischenAugen < RadiusSmiley/8)
+                Kreis2 = circles(cir,1:2);
+                LengeZwischenAugen = sqrt(Delta(1)^2 + Delta(2)^2);
+            end
+        end
+    end
+
+
         %TODO Brille
         Brille = imread('Glasses.jpg');
-        Brille = ImgResizer(Brille,(LengeZwischenAugen/100)*1.5);
+        Brille = ImgResizer(Brille,(LengeZwischenAugen/100)*1.7);
 
     %TODO Winkel der Kreise ausrechnen
     if Kreis1(1) > Kreis2(1)
