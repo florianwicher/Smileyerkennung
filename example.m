@@ -1,4 +1,4 @@
-I = imread('Datensatz/IMG_20181231_145903.jpg');
+I = imread('Testbild.jpg');
 
 imshow(CannyFilter(imbinarize(rgb2gray(I)),0.1));
 
