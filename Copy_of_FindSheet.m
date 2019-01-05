@@ -6,7 +6,7 @@ Image_BW=im2bw(bild,Theshold);
 %Kantenbild aus Cannyfilter erstellen
 pa=CannyFilter(Image_BW, Theshold);
 %figure,imshow(pa);
-pa=imbinarize(pa);
+
 SE=strel('disk',3);
 BW=imdilate(pa,SE);
 %figure,imshow(BW);
@@ -33,6 +33,10 @@ m=cat(1,measurements.Solidity);
 objectcoordinates=[boundingbox m];
 
 
+%b=objectcoordinates(:,3);
+%a=objectcoordinates;
+%found = b>50;
+%objectcoordinates=a(found,:);
 
 %entfernt Werte dessen Dichte der weiﬂen Pixel kleiner als 0.5 sind
 b=objectcoordinates(:,5);
