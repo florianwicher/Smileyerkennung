@@ -1,4 +1,8 @@
-function [labels]  = findConnectingPixels(binaryImg,label,labelmatrix,queue)
+function [labels,boundingboxes]  = findConnectingPixels(binaryImg,label,labelmatrix,queue,boundingbox)
+%labels=matrix which represents the different white areas in the image
+%(labeled with  numbers)
+%boundingboxes=matrix with 4 rows: column, row of the lower left point,
+%width, height of the boundingbox
 readindex=1;
 writeindex=2;
 
@@ -56,5 +60,32 @@ minSize=imgSize/300;
 if(readindex-1<minSize)
     labelmatrix(labelmatrix==label)=-1;
 end
+
+if(readindex-1>=minSize)
+   first0=find(queue(1,:)==0,1,'first');
+   queueCut=queue(:,1:first0-1);
+   minRow=min(queueCut(1,:))-1;
+   maxRow=max(queueCut(1,:))-1;
+   minCol=min(queueCut(2,:))-1;
+   maxCol=max(queueCut(2,:))-1;
+   height=maxRow-minRow+1;
+   width=maxCol-minCol+1;
+   areaBoundingBox=width*height;
+   objectArea=readindex-1;
+   ratio=objectArea/areaBoundingBox;
+   if(ratio>0.3)
+       empty=find(boundingbox(1,:)==0,1,'first');
+       boundingbox(1,empty)=minCol; %
+       boundingbox(2,empty)=minRow;
+       boundingbox(3,empty)=width;
+       boundingbox(4,empty)=height;
+   else
+       labelmatrix(labelmatrix==label)=-1;
+   end
+
+end
+
 labels=labelmatrix;
+boundingboxes=boundingbox;
+
 end
