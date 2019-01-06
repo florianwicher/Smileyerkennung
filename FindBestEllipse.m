@@ -1,5 +1,6 @@
 function [xCenter,yCenter,a,minorAxis,alpha] = FindBestEllipse(image)
 
+%Bildausschnitte, die Kandidaten für das Blatt Papier sind
 F = FindSheet(image);
     results = zeros(0,6);
     
