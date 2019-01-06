@@ -1,5 +1,5 @@
 %Lippeck Daniel
-%Erkennung der Augen
+%Erkennung der Augen / Berechnung / Aufsetzen der Brille
 function [Picture,worked] = EyeDetection(Img, MitteSmileyX, MitteSmileyY, RadiusSmiley)
 
 Im = ImgBinaer(Img,0.6);
