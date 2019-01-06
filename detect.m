@@ -1,5 +1,5 @@
 function [boundingboxes]  = detect(bw);
-
+%Sabrina Oblasser
 [m,n]=size(bw);
 bwnnew = [ zeros(1,n) ;  bw; zeros(1,n)];
 bwnnew  = [ zeros(m+2,1) , bwnnew , zeros(m+2,1)];

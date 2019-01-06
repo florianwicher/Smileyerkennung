@@ -1,5 +1,5 @@
 function [findsheet] =FindSheet(bild)
-
+%Sabrina Oblasser
     I =bild;
 
     Theshold=graythresh(I);
@@ -24,7 +24,7 @@ function [findsheet] =FindSheet(bild)
 
     size=find(l(1,:)==0,1,'first')-1;
 
-    boundingbox=l(:,1:size)
+    boundingbox=l(:,1:size);
 
     boundingboxT=boundingbox';
 
