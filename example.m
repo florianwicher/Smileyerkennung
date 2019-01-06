@@ -10,7 +10,6 @@ end
 fullFileName = fullfile(folder, baseFileName);
 I = imread(fullFileName);
 %I = imread('Datensatz/IMG_4069.jpg');
-
 % scale the image
 I = scaleDown(I, 1000);
 
@@ -18,7 +17,7 @@ I = scaleDown(I, 1000);
 
 [x0,y0,a,b,alpha] = FindBestEllipse(I);
 
-figure();
+%figure();
 %imshow(ellipseDraw(I, x0, y0, a, b));
 
 % compute T and transform the image

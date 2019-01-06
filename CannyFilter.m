@@ -32,7 +32,7 @@ arah2((arah >= 22.5  & arah < 67.5)  | (arah >= 202.5 & arah < 247.5)) = 45;
 arah2((arah >= 67.5  & arah < 112.5) | (arah >= 247.5 & arah < 292.5)) = 90;
 arah2((arah >= 112.5 & arah < 157.5) | (arah >= 292.5 & arah < 337.5)) = 135;
 
-figure, imagesc(arah2); colorbar;
+%figure, imagesc(arah2); colorbar;
 %Calculate magnitude
 magnitude = (Filtered_X.^2) + (Filtered_Y.^2);
 magnitude2 = sqrt(magnitude);
