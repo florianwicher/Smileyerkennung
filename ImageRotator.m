@@ -1,3 +1,5 @@
+%Lippeck Daniel
+%Rotiert ein Bild um die gewünschten Grad
 function rotImage = ImageRotator(img,degree)
 
 switch mod(degree, 360)
@@ -14,7 +16,7 @@ switch mod(degree, 360)
     % Rotation
     otherwise
 
-        % Radians + Transformationsmatrix
+        % Radiant + Transformationsmatrix
         a = degree*pi/180;
         R = [+cos(a) +sin(a); -sin(a) +cos(a)];
 

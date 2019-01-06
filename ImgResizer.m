@@ -1,9 +1,11 @@
+%Lippeck Daniel
+%Skaliert ein Bild um den angegebenen Faktor
 function outputImage = ImgResizer(Image,scale)
 
 %# Initialisierung:
 
-oldSize = size(Image);                   %# Get the size of your image
-newSize = max(floor(scale.*oldSize(1:2)),1);  %# Compute the new image size
+oldSize = size(Image);                   %# Größe des Bildes
+newSize = max(floor(scale.*oldSize(1:2)),1);  %# Größe des neuen Bildes
 
 %# Höhere Skallierung berechnen
 

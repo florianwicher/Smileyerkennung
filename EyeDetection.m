@@ -1,9 +1,13 @@
+%Lippeck Daniel
+%Erkennung der Augen
 function [Picture,worked] = EyeDetection(Img, MitteSmileyX, MitteSmileyY, RadiusSmiley)
 
 Im = ImgBinaer(Img,0.6);
 image(Im);
 [zeilenBild, spaltenBild,~] = size(Img);    
-%Augen berechnen 
+%Durchsucht von Mittelpunkt des Smileys Kreisförmig ob Schwarze Flächen
+%vorhanden sind - erste Detektierten Flächen sind die Augen - da die Augen
+%näher zum Mittelpunkt sind als der  Mund
 xHelper = 0;
 yHelper = 0;
 checker = 0;
@@ -22,7 +26,7 @@ for y = 0:0.1:2.5
                 yHelper = yHelper + yPoint;
                 checker = checker + 1;
             else
-                if(checker >= 4 && checker <= 50)
+                if(checker >= 10 && checker <= 40)
                     circles(i,2) = round(xHelper/checker);
                     circles(i,1) = round(yHelper/checker);
                     i = i + 1;
@@ -39,13 +43,16 @@ for y = 0:0.1:2.5
         end
     end
 end
-imshow(Img)
+%Wenn 2 Flächen erkannt wurden
 if circles(1,1)~=0 && circles(2,1)~=0
     Kreis1 = circles(1,1:2);
     Kreis2 = circles(2,1:2);
-    %TODO Lenge zwischen den Kreisen ausrechnen
+    
     Delta = Kreis1 - Kreis2;
     LengeZwischenAugen = sqrt(Delta(1)^2 + Delta(2)^2);
+    %Sollte es doch zu zuvielen schwarzen Flächen kommen (mehr als 2 für Augen)
+    %und der Augenabstand nicht passt (zu klein für Smiley) so werden die anderen Flächen als
+    %richtige Augen angenommen
     if(LengeZwischenAugen < RadiusSmiley/8 && length(circles(:,1))>=3)
         for cir = 3:length(circles(:,1))
             if(LengeZwischenAugen < RadiusSmiley/8)
@@ -56,40 +63,46 @@ if circles(1,1)~=0 && circles(2,1)~=0
     end
 
 
-        %TODO Brille
+        %Brille wird eingelsen und entsprechend der Augengröße sklaiert
         Brille = imread('Glasses.jpg');
         Brille = ImgResizer(Brille,(LengeZwischenAugen/100)*1.7);
 
-    %TODO Winkel der Kreise ausrechnen
+    % Die Kreise werden so getauscht das der linkere Kreis gleich Kreis1
+    % ist
     if Kreis1(1) > Kreis2(1)
         Helper = Kreis1;
         Kreis1 = Kreis2;
         Kreis2 = Helper;
     end
 
-    %TODO Mitte der Kreise berechnen
+    %Es wird die MItte zwischen den Punkten berechnet für den Mittelpunkt
+    %der Brille
     Mitte = Kreis1 + ((Kreis2 - Kreis1) * 0.5);
 
+    % Je nachdem ob der Mittelpunk über oder unter dem Smiley mittelpunkt
+    % ist wird die Brille um 180 grad gedreht
     if Mitte(2) < MitteSmileyY
-    LengeFuerBerechnung = abs(Kreis1(1) - Kreis2(1));
+        LengeFuerBerechnung = abs(Kreis1(1) - Kreis2(1));
     else
-    LengeFuerBerechnung = Kreis1(1) - Kreis2(1);
+        LengeFuerBerechnung = Kreis1(1) - Kreis2(1);
     end
 
+    %Winkel wird berechnet
     Winkel = acosd(LengeFuerBerechnung/LengeZwischenAugen);
-        %TODO Brille nach Winkel rotieren
+        %das komplent der Brille wird rotiert, da bei der Funktion ansonten
+        %schwarze Ränder durch die Drehung des Bildes auftauchen würden
         Brille = imcomplement(Brille);
         Brille = ImageRotator(Brille,Winkel);
         Brille = imcomplement(Brille);
         
 
-    %TODO Startpunkt
+    %Der Startpunkt (Linksoben) für das einfügen der Brille wird berechnet
     [zeilenBrille, spaltenBrille, ~] = size(Brille);
     Mitte(1) = round(Mitte(1) - spaltenBrille/2);
     Mitte(2) = round(Mitte(2) - zeilenBrille/2);
     Mitte = round(Mitte);
 
-    %TODO Brille aufsetzen 
+    %Brille wird ins Bild eingefügt 
      for x = 1:zeilenBrille 
          for y = 1:spaltenBrille
              for z = 1:3
@@ -101,10 +114,13 @@ if circles(1,1)~=0 && circles(2,1)~=0
              end
          end
      end
+     %Es hat funktionert
      worked = true;
 else
+    %Es hat nicht funktioniert
     worked = false;
 end
+    %Bild wird zurück gegeben
     Picture = Img;
 end
 
