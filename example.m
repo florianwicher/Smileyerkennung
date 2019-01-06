@@ -19,7 +19,7 @@ imshow(CannyFilter(imbinarize(rgb2gray(I)),0.1));
 [x0,y0,a,b,alpha] = FindBestEllipse(I);
 
 figure();
-imshow(ellipseDraw(img, x0, y0, a, b));
+imshow(ellipseDraw(I, x0, y0, a, b));
 
 % compute T and transform the image
 T = ellipseToCircleT(a,b);
