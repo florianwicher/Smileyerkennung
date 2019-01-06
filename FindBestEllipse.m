@@ -59,7 +59,7 @@ for i = 1:size(F,1)
         %dort auch für Skizzen und genaue Erklärung des Verfahrens.
         fSquare = (X(K)-x2).^2 + (Y(K)-y2).^2;
         cosineTau = (majorAxisSquared + thirdPointDistanceSquared(K) - fSquare) ./ (2*sqrt(majorAxisSquared*thirdPointDistanceSquared(K)));
-        cosineTau = max(-1,cosineTau); siehe
+        cosineTau = max(-1,cosineTau);
         cosineTau = min(1,cosineTau);
         sineTauSq = 1 - cosineTau.^2; %weil sin(x)^2+cos(x)^2=1
         minorAxis = sqrt( (majorAxisSquared * thirdPointDistanceSquared(K) .* sineTauSq) ./ (majorAxisSquared - thirdPointDistanceSquared(K) .* cosineTau.^2) );
