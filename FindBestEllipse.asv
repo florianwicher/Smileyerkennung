@@ -67,8 +67,8 @@ for i = 1:size(F,1)
         %runden, damit wir die Ergebnisse in bins einteilen können
         indices = round(minorAxis);
         
-        %entferne die ergebnisse, die auf 0 gerundet wurden (entartete oder
-        %beinahe entartete Ellipsen)
+        %entferne die ergebnisse, die auf 0 gerundet wurden (entartete
+        %Ellipsen)
         indices = indices(indices>0);
         
         akkumulator = accumarray(indices, 1);
