@@ -1,4 +1,4 @@
-function [xCenter,yCenter,a,minorAxis,alpha] = FindBestEllipse(image)
+function [xCenter,yCenter,a,b,alpha] = FindBestEllipse(image)
 
 F = FindSheet(image);
     results = zeros(0,6);
@@ -40,14 +40,15 @@ for i = 1:size(F,1)
         %"A new efficient ellipse detection method", Yonghong Xie, Qiang Ji,
         %2002 in Object recognition supported by user interaction for service robots;
         %Die hier verwendeten Variablennamen sind dieselben wie dort.
+   
         fSquare = (X(K)-x2).^2 + (Y(K)-y2).^2;
         cosineTau = (majorAxisSquared + thirdPointDistanceSquared(K) - fSquare) ./ (2*sqrt(majorAxisSquared*thirdPointDistanceSquared(K)));
         cosineTau = max(-1,cosineTau); siehe
         cosineTau = min(1,cosineTau);
         sineTauSq = 1 - cosineTau.^2; %weil sin(x)^2+cos(x)^2=1
-        minorAxis = sqrt( (majorAxisSquared * thirdPointDistanceSquared(K) .* sineTauSq) ./ (majorAxisSquared - thirdPointDistanceSquared(K) .* cosineTau.^2) );
+        b = sqrt( (majorAxisSquared * thirdPointDistanceSquared(K) .* sineTauSq) ./ (majorAxisSquared - thirdPointDistanceSquared(K) .* cosineTau.^2) );
 
-        indices = round(minorAxis);
+        indices = round(b);
         indices = indices(indices>0);
         
         akkumulator = accumarray(indices, 1);
@@ -68,4 +69,4 @@ end
 [~, index] = max(results(:,6));
 
 t = num2cell(results(index,:));
-[xCenter,yCenter,a,minorAxis,alpha,~]=deal(t{:});
+[xCenter,yCenter,a,b,alpha,~]=deal(t{:});
