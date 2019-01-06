@@ -1,19 +1,23 @@
 function [Picture,worked] = EyeDetection(Img, MitteSmileyX, MitteSmileyY, RadiusSmiley)
-Im = imbinarize(Img);
+
+Im = ImgBinaer(Img,0.6);
+image(Im);
 [zeilenBild, spaltenBild,~] = size(Img);    
 %Augen berechnen 
 xHelper = 0;
 yHelper = 0;
 checker = 0;
+checker2 = 0;
 circles = zeros(2,2); 
-for y = 0:0.1:1.5
-    SearchRadius = RadiusSmiley/(3-y);
+for y = 0:0.1:2.5
+    SearchRadius = RadiusSmiley/(4-y);
     if circles(1,1)==0 || circles(2,1)==0
         i = 1;
         for x = 1:360
+            checker2 = checker2 - 1;
             yPoint = MitteSmileyX + SearchRadius * cosd(x);
             xPoint = MitteSmileyY + SearchRadius * sind(x);
-            if Im(round(xPoint),round(yPoint),:)==0
+            if Im(round(xPoint),round(yPoint),:)==0 & checker2 <= 0
                 xHelper = xHelper + xPoint;
                 yHelper = yHelper + yPoint;
                 checker = checker + 1;
@@ -25,13 +29,13 @@ for y = 0:0.1:1.5
                     xHelper = 0;
                     yHelper = 0;
                     checker = 0;
+                    checker2 = 15;
                 else
                     xHelper = 0;
                     yHelper = 0;
                     checker = 0;
                 end
             end
-            Img(round(xPoint),round(yPoint),:) = 150;
         end
     end
 end
@@ -39,13 +43,22 @@ imshow(Img)
 if circles(1,1)~=0 && circles(2,1)~=0
     Kreis1 = circles(1,1:2);
     Kreis2 = circles(2,1:2);
-
     %TODO Lenge zwischen den Kreisen ausrechnen
     Delta = Kreis1 - Kreis2;
     LengeZwischenAugen = sqrt(Delta(1)^2 + Delta(2)^2);
+    if(LengeZwischenAugen < RadiusSmiley/8 && length(circles(:,1))>=3)
+        for cir = 3:length(circles(:,1))
+            if(LengeZwischenAugen < RadiusSmiley/8)
+                Kreis2 = circles(cir,1:2);
+                LengeZwischenAugen = sqrt(Delta(1)^2 + Delta(2)^2);
+            end
+        end
+    end
+
+
         %TODO Brille
         Brille = imread('Glasses.jpg');
-        Brille = ImgResizer(Brille,(LengeZwischenAugen/100)*1.5);
+        Brille = ImgResizer(Brille,(LengeZwischenAugen/100)*1.7);
 
     %TODO Winkel der Kreise ausrechnen
     if Kreis1(1) > Kreis2(1)

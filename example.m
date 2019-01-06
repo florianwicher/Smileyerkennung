@@ -1,4 +1,16 @@
-I = imread('Datensatz/IMG_4069.jpg');
+close all
+startingFolder = 'dir';
+% Get the name of the file that the user wants to use.
+defaultFileName = fullfile(startingFolder, '*.jpg');
+[baseFileName, folder] = uigetfile(defaultFileName, 'Select a file');
+if baseFileName == 0
+  % User clicked the Cancel button.
+  return;
+end
+fullFileName = fullfile(folder, baseFileName);
+I = imread(fullFileName);
+%I = imread('Datensatz/IMG_4069.jpg');
+
 
 imshow(CannyFilter(imbinarize(rgb2gray(I)),0.1));
 
@@ -27,7 +39,7 @@ centerNew = center * T;
 img2 = FloodFill(img_corrected, round(centerNew(1)), round(centerNew(2)), 0.7);
 
 [img2,worked] = EyeDetection(img2, centerNew(1), centerNew(2), a);
-
+imshow(img2);
 figure();
 img2 = imgTransform(img2, inv(T));
 imshow(img2);
