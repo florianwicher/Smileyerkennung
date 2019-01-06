@@ -1,4 +1,5 @@
 function [findsheet] =FindSheetPrototype(bild)
+%Sabrina Oblasser
 Theshold=graythresh(bild);
 Image_BW=im2bw(bild,Theshold);
 %figure,imshow(Image_BW);

@@ -1,3 +1,4 @@
+% Mathias Schwengerer
 function img_ellipse = ellipseDraw(img, x0, y0, a, b)
 % zeichnet eine Ellipse in 'img'
 

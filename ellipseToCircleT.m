@@ -1,3 +1,4 @@
+% Mathias Schwengerer
 function T = ellipseToCircleT(a, b)
 % Berechnet eine Transformationsmatrix, die eine Ellipse mit den Parametern 
 % a und b in einen Kreis mit Radius a überführt

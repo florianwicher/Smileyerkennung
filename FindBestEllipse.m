@@ -1,3 +1,4 @@
+%author Florian Wicher
 function [xCenter,yCenter,a,minorAxis,alpha] = FindBestEllipse(image)
 
 %Bildausschnitte, die Kandidaten für das Blatt Papier sind

@@ -1,3 +1,4 @@
+% Mathias Schwengerer
 function B=imgTransform(A, T)
 % transformiert das übergebene Bild 'A' mit der Transformationsmatrix 'T'
 

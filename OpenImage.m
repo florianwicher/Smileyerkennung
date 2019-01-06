@@ -1,3 +1,4 @@
+%Julia Kleinferchner
 function [filtered_image] = OpenImage(img, r)
 %applies an opening filter with the selected size r to the input image.
 %as opening pattern, a circle with radius r is used
@@ -61,9 +62,14 @@ for i = 1:size(img,1)
             bottom = n - size(img,2);
         end
         smaller_pattern = pattern((c-left):(c+right),(c-top):(c+bottom)); %reduce pattern
-        if eroded_image(i,n) == 1 %check every pixel that is 1
-            %set everything to 1 that has a 1 in the pattern
-            dilated_image((i-left):(i+right),(n-top):(n+bottom)) = dilated_image((i-left):(i+right),(n-top):(n+bottom)) | smaller_pattern;
+        if eroded_image(i,n) == 0 %check every pixel that is 0
+            %get all Pixels in the neighborhood that have 1 in the pattern
+            patternpixels = (eroded_image((i-left):(i+right),(n-top):(n+bottom)) & smaller_pattern);
+            if sum(patternpixels(:)) > 0 %if one of the pixels in the pattern is 1 in the image
+                dilated_image(i,n) = 1;
+            else
+                dilated_image(i,n) = 0;
+            end
         end
     end
 end

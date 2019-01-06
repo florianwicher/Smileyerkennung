@@ -1,4 +1,5 @@
 function [labels,boundingboxes]  = findConnectingPixels(binaryImg,label,labelmatrix,queue,boundingbox)
+%Sabrina Oblasser
 
 %labels=matrix which represents the different white areas in the image
 %(labeled with  numbers)
