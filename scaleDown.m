@@ -1,3 +1,4 @@
+% skaliert das Bild 'img' so, dass die schmälere Seite 'm' Pixel hat.
 function img = scaleDown(img, m)
 
 minSize = min(size(img,1), size(img,2));
