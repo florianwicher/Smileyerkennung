@@ -1,6 +1,6 @@
 function img = scaleDown(img, m)
 
-minSize = min(size(I,1), size(I,2));
+minSize = min(size(img,1), size(img,2));
 
 if minSize > m
    s = m / minSize;
