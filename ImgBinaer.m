@@ -1,4 +1,4 @@
-%Lippeck
+%Daniel Lippeck
 %ImgToBinaerImage
 function ImgB = ImgBinaer(Img,Thresh)
     
