@@ -5,14 +5,14 @@ function [Picture,worked] = EyeDetection(Img, MitteSmileyX, MitteSmileyY, Radius
 Im = ImgBinaer(Img,0.6);
 image(Im);
 [zeilenBild, spaltenBild,~] = size(Img);    
-%Durchsucht von Mittelpunkt des Smileys Kreisförmig ob Schwarze Flächen
-%vorhanden sind - erste Detektierten Flächen sind die Augen - da die Augen
-%näher zum Mittelpunkt sind als der  Mund
 xHelper = 0;
 yHelper = 0;
 checker = 0;
 checker2 = 0;
 circles = zeros(2,2); 
+%Durchsucht von Mittelpunkt des Smileys Kreisförmig ob Schwarze Flächen
+%vorhanden sind - erste Detektierten Flächen sind die Augen - da die Augen
+%näher zum Mittelpunkt sind als der  Mund
 for y = 0:0.1:2.5
     SearchRadius = RadiusSmiley/(4-y);
     if circles(1,1)==0 || circles(2,1)==0
@@ -81,10 +81,18 @@ if circles(1,1)~=0 && circles(2,1)~=0
 
     % Je nachdem ob der Mittelpunk über oder unter dem Smiley mittelpunkt
     % ist wird die Brille um 180 grad gedreht
-    if Mitte(2) < MitteSmileyY
+    if Mitte(1) < MitteSmileyX
+        if Mitte(2) < MitteSmileyY
         LengeFuerBerechnung = abs(Kreis1(1) - Kreis2(1));
-    else
+        else
         LengeFuerBerechnung = Kreis1(1) - Kreis2(1);
+        end
+    else
+        if Mitte(2) < MitteSmileyY
+        LengeFuerBerechnung = (Kreis1(1) - Kreis2(1));
+        else
+        LengeFuerBerechnung = abs(Kreis1(1) - Kreis2(1));
+        end
     end
 
     %Winkel wird berechnet

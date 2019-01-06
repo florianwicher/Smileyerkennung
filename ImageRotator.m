@@ -5,49 +5,50 @@ function rotImage = ImageRotator(img,degree)
 switch mod(degree, 360)
     % Spezialfälle
     case 0
+        %Nichts
         rotImage = img;
     case 90
+        %Einfache Matrix rotation
         rotImage = rot90(img);
     case 180
+        %Bild umdrehen
         rotImage = img(end:-1:1, end:-1:1);
     case 270
+        %Einfache Matrix rotation mit umgedrehten Bild
         rotImage = rot90(img(end:-1:1, end:-1:1));
 
     % Rotation
     otherwise
 
         % Radiant + Transformationsmatrix
-        a = degree*pi/180;
-        R = [+cos(a) +sin(a); -sin(a) +cos(a)];
+        rad = degree*pi/180;
+        TransM = [+cos(rad) +sin(rad); -sin(rad) +cos(rad)];
 
         % Größe des Bildes berechnen
-        [m,n,p] = size(img);
-        dest = round( [1 1; 1 n; m 1; m n]*R );
-        dest = bsxfun(@minus, dest, min(dest)) + 1;
-        rotImage = zeros([max(dest) p],class(img));
+        [h,b,d] = size(img);
+        helper = round( [1 1; 1 b; h 1; h b]*TransM );
+        helper = (helper - min(helper)) + 1;
+        rotImage = zeros([max(helper) d],class(img));
 
         % Pixelmapping vom Transformierten Image zum Org
-        for ii = 1:size(rotImage,1)
-            for jj = 1:size(rotImage,2)
-                source = ([ii jj]-dest(1,:))*R.';
-                if all(source >= 1) && all(source <= [m n])
+        for Bildh = 1:size(rotImage,1)
+            for Bildb = 1:size(rotImage,2)
+                orig = ([Bildh Bildb]-helper(1,:))*TransM.';
+                if all(orig >= 1) && all(orig <= [h b])
+                    %Runden
+                    Dn = floor(orig);
+                    Up = ceil(orig);
 
                     % Alle 4 anliegenden Pixel betrachten
-                    C = ceil(source);
-                    F = floor(source);
-
                     % Relative Fläche berechnen
-                    A = [...
-                        ((C(2)-source(2))*(C(1)-source(1))),...
-                        ((source(2)-F(2))*(source(1)-F(1)));
-                        ((C(2)-source(2))*(source(1)-F(1))),...
-                        ((source(2)-F(2))*(C(1)-source(1)))];
+                    A = [((Up(2)-orig(2))*(Up(1)-orig(1))),((orig(2)-Dn(2))*(orig(1)-Dn(1)));
+                        ((Up(2)-orig(2))*(orig(1)-Dn(1))),((orig(2)-Dn(2))*(Up(1)-orig(1)))];
 
                     % Farbe berechnen
-                    cols = bsxfun(@times, A, double(img(F(1):C(1),F(2):C(2),:)));
+                    cols = A .* double(img(Dn(1):Up(1),Dn(2):Up(2),:));
 
                     % Einfügen                     
-                    rotImage(ii,jj,:) = sum(sum(cols),2);
+                    rotImage(Bildh,Bildb,:) = sum(sum(cols),2);
 
                 end
             end
