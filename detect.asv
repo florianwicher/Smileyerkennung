@@ -15,18 +15,14 @@ for(ir=2:m+1)
         
         if((curdata==1)&&(lc==0))
             labelMatrix(ir,ic)=startLabel;
-            queue(1,1)=ir;
-            queue(2,1)=ic;
             
-             labelMatrix = findConnectingPixels(bwnnew,startLabel,labelMatrix,queue);
-             
+             labelMatrix = findConnectingPixels(bw,startlabel,labelMatrix,queue);
              startLabel = startLabel+1;
         end
         
     end
 end
-labelMatrix(labelMatrix==-1)=0;
-L = labelMatrix(2:m+1,2:n+1);
+L = L(2:m+1,2:n+1);
 
 
 
