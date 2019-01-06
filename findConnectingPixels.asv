@@ -49,12 +49,6 @@ while(readindex<writeindex)
     
     readindex=readindex+1;
 end
-imgSize=size(queue,2);
-minSize=imgSize/300;
 
-
-if(readindex-1<minSize)
-    labelmatrix(labelmatrix==label)=-1;
-end
 labels=labelmatrix;
 end
