@@ -43,7 +43,7 @@ objectcoordinates=a(found,:);
 
 
 %[sortedS, sortIndexes] = [measurements.Solidity]
-figure,imshow(pa)
+%figure,imshow(pa)
 hold on
 plot(objectcoordinates(:,1),objectcoordinates(:,2),'b*')
 hold off

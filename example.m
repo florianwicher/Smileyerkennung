@@ -14,12 +14,12 @@ I = imread(fullFileName);
 % scale the image
 I = scaleDown(I, 1000);
 
-imshow(CannyFilter(imbinarize(rgb2gray(I)),0.1));
+%imshow(CannyFilter(imbinarize(rgb2gray(I)),0.1));
 
 [x0,y0,a,b,alpha] = FindBestEllipse(I);
 
 figure();
-imshow(ellipseDraw(I, x0, y0, a, b));
+%imshow(ellipseDraw(I, x0, y0, a, b));
 
 % compute T and transform the image
 T = ellipseToCircleT(a,b);
@@ -32,7 +32,7 @@ centerNew = center * T;
 img2 = FloodFill(img_corrected, round(centerNew(1)), round(centerNew(2)), 0.7);
 
 [img2,worked] = EyeDetection(img2, centerNew(1), centerNew(2), a);
-imshow(img2);
+%imshow(img2);
 figure();
 img2 = imgTransform(img2, inv(T));
 imshow(img2);

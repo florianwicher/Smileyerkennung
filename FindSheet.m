@@ -28,19 +28,19 @@ function [findsheet] =FindSheet(bild)
 
     boundingboxT=boundingbox';
 
-    figure,imshow(I);
+    %figure,imshow(I);
 
-    hold on
+    %hold on
 
-    plot(boundingboxT(:,1),boundingboxT(:,2),'b*')
+    %plot(boundingboxT(:,1),boundingboxT(:,2),'b*')
 
-    hold off
+    %hold off
 
-    for i=1:size
+    %for i=1:size
 
-        rectangle('Position',[boundingboxT(i,1) boundingboxT(i,2) boundingboxT(i,3) boundingboxT(i,4)],'EdgeColor','r','LineWidth',2);
+   %     rectangle('Position',[boundingboxT(i,1) boundingboxT(i,2) boundingboxT(i,3) boundingboxT(i,4)],'EdgeColor','r','LineWidth',2);
 
-    end
+   % end
 
     findsheet=boundingboxT;
 
