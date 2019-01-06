@@ -2,7 +2,7 @@ function [filtered_image] = OpenImage(img, r)
 %applies an opening filter with the selected size r to the input image.
 %as opening pattern, a circle with radius r is used
 
-%create a disk pattern
+%create a matrix with size x size
 pattern = CreateDisk(r);
 
 eroded_image = img; %copy input image
