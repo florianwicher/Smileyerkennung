@@ -21,11 +21,8 @@ for(ir=2:m+1)
             queue=zeros(2,m*n);
             queue(1,1)=ir;
             queue(2,1)=ic;
-            %find connecting Pixels and mark them in labelMatrix, write the
-            %coordinates of the rectangles drawn around the different areas
-            %in boundingbox
+            %find connecting Pixels and mark them in labelMatrix, write de
              [labelMatrix,boundingbox] = findConnectingPixels(bwnnew,startLabel,labelMatrix,queue,boundingbox);
-     
              startLabel = startLabel+1;
         end
 
