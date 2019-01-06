@@ -1,5 +1,4 @@
 function [canny] = CannyFilter(bild, treshold)
-%Sabrina Oblasser
 img=bild;
 
 %Value for Thresholding
