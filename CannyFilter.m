@@ -52,7 +52,7 @@ for i=2:pan-1
 end;
 
 BW = BW.*magnitude2;
-figure, imshow(BW);
+%figure, imshow(BW);
 %Hysteresis Thresholding
 T_Low = T_Low * max(max(BW));
 T_High = T_High * max(max(BW));
@@ -71,7 +71,7 @@ for i = 1  : pan
 end;
 edge_final = uint8(T_res.*255);
 %Show final edge detection result
-figure, imshow(edge_final);
+%figure, imshow(edge_final);
 
 
     %Canny Filter

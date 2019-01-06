@@ -18,7 +18,7 @@ function [findsheet] =FindSheet(bild)
 
     Image_BW=imfill(BW,'holes');
 
-    imshow(Image_BW);
+    %imshow(Image_BW);
 
     l=detect(Image_BW);
 
