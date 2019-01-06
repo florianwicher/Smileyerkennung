@@ -1,6 +1,6 @@
 clear all;
 
-name = 'IMG_20181117_155407';
+name = 'IMG_20181231_151844';
 type = '.jpg';
 
 % Bild einlesen
