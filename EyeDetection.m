@@ -3,7 +3,6 @@
 function [Picture,worked] = EyeDetection(Img, MitteSmileyX, MitteSmileyY, RadiusSmiley)
 
 Im = ImgBinaer(Img,0.6);
-image(Im);
 [zeilenBild, spaltenBild,~] = size(Img);    
 xHelper = 0;
 yHelper = 0;
