@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 close all
 startingFolder = 'dir';
 % Get the name of the file that the user wants to use.
@@ -11,6 +12,9 @@ fullFileName = fullfile(folder, baseFileName);
 I = imread(fullFileName);
 %I = imread('Datensatz/IMG_4069.jpg');
 
+=======
+I = imread('Datensatz/IMG_4069.jpg');
+>>>>>>> parent of cf36f8c... merge
 
 imshow(CannyFilter(imbinarize(rgb2gray(I)),0.1));
 
