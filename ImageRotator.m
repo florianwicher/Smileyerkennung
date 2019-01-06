@@ -3,7 +3,7 @@ function rotImage = ImageRotator(img,degree)
 switch mod(degree, 360)
     % Spezialfälle
     case 0
-        rotImage = imaimgge;
+        rotImage = img;
     case 90
         rotImage = rot90(img);
     case 180
