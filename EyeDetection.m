@@ -26,7 +26,7 @@ for y = 0:0.1:2.5
                 yHelper = yHelper + yPoint;
                 checker = checker + 1;
             else
-                if(checker >= 10 && checker <= 40)
+                if(checker >= 3 && checker <= 30)
                     circles(i,2) = round(xHelper/checker);
                     circles(i,1) = round(yHelper/checker);
                     i = i + 1;
