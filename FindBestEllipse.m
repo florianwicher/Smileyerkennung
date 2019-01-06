@@ -13,6 +13,9 @@ for i = 1:size(F,1)
     binaryImage = OpenImage(binaryImage,5);
     kantenbild = CannyFilter(binaryImage,0.2);
     if sum(kantenbild(:)) < 10000000
+        %aufgrund der hohen Komplexität ist der Algorithmus für sehr große
+        %Bilder quasi unbrauchbar :( Die Ausführung führt meistens dazu,
+        %dass sich Matlab aufhängt.
 
     [Y,X]=find(kantenbild);  %list all points in binary image that are 1
     
