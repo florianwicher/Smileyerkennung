@@ -1,21 +1,23 @@
 function [Picture,worked] = EyeDetection(Img, MitteSmileyX, MitteSmileyY, RadiusSmiley)
 
-Im = ImgBinaer(Img,0.3);
-
+Im = ImgBinaer(Img,0.6);
+image(Im);
 [zeilenBild, spaltenBild,~] = size(Img);    
 %Augen berechnen 
 xHelper = 0;
 yHelper = 0;
 checker = 0;
+checker2 = 0;
 circles = zeros(2,2); 
-for y = 0:0.1:1.5
-    SearchRadius = RadiusSmiley/(3-y);
+for y = 0:0.1:2.5
+    SearchRadius = RadiusSmiley/(4-y);
     if circles(1,1)==0 || circles(2,1)==0
         i = 1;
         for x = 1:360
+            checker2 = checker2 - 1;
             yPoint = MitteSmileyX + SearchRadius * cosd(x);
             xPoint = MitteSmileyY + SearchRadius * sind(x);
-            if Im(round(xPoint),round(yPoint),:)==0
+            if Im(round(xPoint),round(yPoint),:)==0 & checker2 <= 0
                 xHelper = xHelper + xPoint;
                 yHelper = yHelper + yPoint;
                 checker = checker + 1;
@@ -27,6 +29,7 @@ for y = 0:0.1:1.5
                     xHelper = 0;
                     yHelper = 0;
                     checker = 0;
+                    checker2 = 15;
                 else
                     xHelper = 0;
                     yHelper = 0;

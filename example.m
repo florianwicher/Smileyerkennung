@@ -1,3 +1,4 @@
+close all
 startingFolder = 'dir';
 % Get the name of the file that the user wants to use.
 defaultFileName = fullfile(startingFolder, '*.jpg');
