@@ -9,6 +9,9 @@ if baseFileName == 0
 end
 fullFileName = fullfile(folder, baseFileName);
 I = imread(fullFileName);
+
+figure(),set(gcf, 'Name', 'Before', 'NumberTitle', 'off'),imshow(I);
+
 %I = imread('Datensatz/IMG_4069.jpg');
 % scale the image
 I = scaleDown(I, 1000);
@@ -17,7 +20,6 @@ I = scaleDown(I, 1000);
 
 [x0,y0,a,b,alpha] = FindBestEllipse(I);
 
-%figure();
 %imshow(ellipseDraw(I, x0, y0, a, b));
 
 % compute T and transform the image
@@ -34,4 +36,5 @@ img2 = FloodFill(img_corrected, round(centerNew(1)), round(centerNew(2)), 0.7);
 %imshow(img2);
 figure();
 img2 = imgTransform(img2, inv(T));
+set(gcf, 'Name', 'After', 'NumberTitle', 'off');
 imshow(img2);
