@@ -1,3 +1,4 @@
+%Julia Kleinferchner
 function [pattern] = CreateDisk(r)
 %creates a disk shape pattern with r size that can be used for filtering
 

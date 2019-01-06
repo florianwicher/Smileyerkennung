@@ -1,3 +1,4 @@
+%Julia Kleinferchner
 function [filtered_image] = MedianFilter(img)
 %applies a 3x3 Median Filter to the input image
 
